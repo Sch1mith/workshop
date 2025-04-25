@@ -1,5 +1,5 @@
 -- Criando o container --
-docker run --name mysql-workshop -e MYSQL_ROOT_PASSWORD=1234 -v C:\Users\Admin\Desktop\Link:/var/lib/mysql -p 3306:3306 -d mysql:latest
+docker run --name mysql-workshop -e MYSQL_ROOT_PASSWORD=1234 -v dados_mysql:/var/lib/mysql -v C:\Users\Admin\Desktop\scripts:/var/scripts -p 3306:3306 -d mysql:latest
 
 -- Banco de dados usado --
 CREATE DATABASE IF NOT EXISTS test_db;
@@ -21,7 +21,14 @@ INSERT INTO clientes (nome, email, idade) VALUES
 -- comando para entrar no bash do container --
 docker exec -it mysql-workshop bash
 
+-- Entrando no mysql --
 mysql -u root -p
-SOURCE /var/lib/mysql/banco/banco.sql;
+
+-- rodando o script --
+SOURCE /var/scripts/banco.sql;
+
+-- saindo do bash --
 exit
-mysql -u root -p1234 -e "SHOW DATABASES; USE test_db; SHOW TABLES; SELECT * FROM clientes;"
+
+-- 
+mysql -u root -p -e "SHOW DATABASES; USE test_db; SHOW TABLES; SELECT * FROM clientes;"
