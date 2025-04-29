@@ -1,7 +1,25 @@
--- Criando o container --
+-------- Indo para a área de trabalho ---------
+
+cd desktop
+
+
+
+-------- Criando o container ----------
+
 docker run --name mysql-workshop -e MYSQL_ROOT_PASSWORD=1234 -v dados_mysql:/var/lib/mysql -v C:\Users\Admin\Desktop\scripts:/var/scripts -p 3306:3306 -d mysql:latest
 
--- Banco de dados usado --
+
+
+-------- comando para entrar no bash do container e indo para a pasta volume scripts ------------
+
+docker exec -it mysql-workshop bash
+
+cd /var/scripts
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+-------- Banco de dados usado ----------
+
 CREATE DATABASE IF NOT EXISTS test_db;
 USE test_db;
 
@@ -18,17 +36,39 @@ INSERT INTO clientes (nome, email, idade) VALUES
 ('Jane Smith', 'jane@example.com', 25),
 ('Bob Johnson', 'bob@example.com', 40);
 
--- comando para entrar no bash do container --
-docker exec -it mysql-workshop bash
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
--- Entrando no mysql --
+-------- Entrando no mysql ---------
+
 mysql -u root -p
 
--- rodando o script --
+
+
+-------- rodando o script ---------
+
 SOURCE /var/scripts/banco.sql;
 
--- saindo do bash --
+
+-------- Testando o banco ---------
+
+SHOW TABLES; 
+
+SELECT * FROM clientes;"
+
+
+
+-------- saindo do bash ----------
+
 exit
 
--- 
-mysql -u root -p -e "SHOW DATABASES; USE test_db; SHOW TABLES; SELECT * FROM clientes;"
+
+-------- Baixando php my admin -----------
+
+docker pull phpmyadmin
+
+
+
+-------- Executando a imagem do php my admin --------------
+
+docker run --name phpmyadmin -d --link mysql-workshop:db -p 8080:80 phpmyadmin:latest
+
